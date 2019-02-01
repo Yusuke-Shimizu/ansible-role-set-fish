@@ -1,0 +1,33 @@
+---
+# tasks file for ansible-role-set-fish
+# setup fish
+- name: install fish
+  homebrew:
+    name: fish
+    state: present
+
+- name: create fish directory
+  file:
+    path: "{{ ansible_env.HOME }}/.config/fish/functions"
+    state: directory
+    owner: y3-shimizu
+    group: staff
+    mode: 0750
+
+- name: install fisherman
+  get_url:
+    url: https://git.io/fisher
+    dest: "{{ ansible_env.HOME }}/.config/fish/functions/fisher.fish"
+    mode: 0644
+    backup: yes
+
+- name: install fisherman plugins
+  shell: "fish -lc 'fisher add {{ item }}'"
+  with_items:
+    - oh-my-fish/plugin-peco
+    - oh-my-fish/plugin-aws
+    - oh-my-fish/plugin-osx
+    - jethrokuan/z
+    - omg/z
+    - omg/peco
+    - yoshiori/fish-peco_select_ghq_repository
