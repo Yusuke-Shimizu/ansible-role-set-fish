@@ -1,15 +1,13 @@
 ---
 - hosts: all
   connection: local
-  # roles:
-  #   # After you call this module, you can use this
-  #   - suzuki-shunsuke.ghq-module
-  # vars:
-  #   LANGUAGES:
-  #     - { name: python, version: 3.6.8, command: python --version }
-  #     # - { name: python, version: 3.6.6, command: python --version }
-  #     - { name: ruby, version: 2.5.3, command: ruby --version }
-  #     - { name: golang, version: 1.11, command: go version }
+  vars:
+    fisherman_plugins:
+      - oh-my-fish/plugin-peco
+      - oh-my-fish/plugin-aws
+      - oh-my-fish/plugin-osx
+      - jethrokuan/z
+      - yoshiori/fish-peco_select_ghq_repository
 
   tasks:
     - include_tasks: tasks/main.yml

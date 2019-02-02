@@ -21,13 +21,15 @@
     mode: 0644
     backup: yes
 
+
+- name: Get list of a package
+  shell: fish -lc "fisher ls | grep {{ item }}"
+  register: installed_package_result
+  with_items: "{{ fisherman_plugins }}"
+  ignore_errors: yes
+  changed_when: no
+
 - name: install fisherman plugins
-  shell: "fish -lc 'fisher add {{ item }}'"
-  with_items:
-    - oh-my-fish/plugin-peco
-    - oh-my-fish/plugin-aws
-    - oh-my-fish/plugin-osx
-    - jethrokuan/z
-    - omg/z
-    - omg/peco
-    - yoshiori/fish-peco_select_ghq_repository
+  shell: "fish -lc 'fisher add {{ item.item }}'"
+  with_items: '{{ installed_package_result.results }}'
+  when: item.failed

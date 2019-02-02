@@ -5,6 +5,16 @@ namespace :inspec do
   task :default do
     sh 'inspec exec spec/common_spec.rb'
   end
+
+  desc "Run first ansible Inspec tests"
+  task :first do
+    sh 'inspec exec spec/ansible_build_spec.rb'
+  end
+
+  desc "Run second ansible Inspec tests"
+  task :second do
+    sh 'inspec exec spec/ansible_second_build_spec.rb'
+  end
 end
 
 namespace :ansible do
@@ -32,7 +42,9 @@ end
 namespace :ci do
   desc "Run CI test"
   task :default do
-    Rake::Task["ansible:build"].invoke()
+    # Rake::Task["ansible:build"].invoke()
+    Rake::Task["inspec:first"].invoke()
     Rake::Task["inspec:default"].invoke()
+    Rake::Task["inspec:second"].invoke()
   end
 end
